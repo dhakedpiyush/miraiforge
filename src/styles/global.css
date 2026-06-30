@@ -27,7 +27,7 @@
 
   /* Layout */
   --maxw: 1240px;
-  --pad-x: 64px;
+  --pad-x: clamp(28px, 6vw, 120px);
 }
 
 * {
@@ -98,12 +98,11 @@ svg {
   text-transform: uppercase;
 }
 
-/* The site is a single centered "sheet" echoing the brand sheet */
+/* Full-bleed: cold paper fills the viewport, content padded via --pad-x */
 .sheet {
-  max-width: var(--maxw);
-  margin: 0 auto;
+  width: 100%;
+  margin: 0;
   background: var(--paper);
-  box-shadow: 0 24px 80px -32px rgba(20, 22, 30, 0.4);
 }
 
 .section {
