@@ -1,0 +1,558 @@
+---
+import Base from '../layouts/Base.astro';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+
+const services = [
+  {
+    no: '01',
+    name: 'Sales Cloud',
+    accent: 'var(--blue)',
+    blurb:
+      'Pipeline you can trust. We configure lead-to-cash, forecasting and automation so your reps sell instead of wrangling data.',
+    points: ['Lead & opportunity design', 'Forecasting & dashboards', 'CPQ & quoting', 'Sales automation'],
+  },
+  {
+    no: '02',
+    name: 'Service Cloud',
+    accent: 'var(--cyan)',
+    blurb:
+      'Support that scales. Omni-channel case management, knowledge and automation that cut handle time and lift CSAT.',
+    points: ['Omni-channel routing', 'Knowledge base', 'Case automation', 'Self-service portals'],
+  },
+  {
+    no: '03',
+    name: 'Experience Cloud',
+    accent: 'var(--violet)',
+    blurb:
+      'Portals & communities for customers and partners — branded, secure, and wired straight into your Salesforce data.',
+    points: ['Customer & partner portals', 'Branded community sites', 'Secure data sharing', 'Login & identity'],
+  },
+  {
+    no: '04',
+    name: 'Integration & Data',
+    accent: 'var(--blue)',
+    blurb:
+      'Salesforce talks to everything. We connect your stack, migrate cleanly, and keep one source of truth.',
+    points: ['System integration', 'Data migration', 'API & MuleSoft', 'Data quality & governance'],
+  },
+  {
+    no: '05',
+    name: 'Payments & Billing',
+    accent: 'var(--cyan)',
+    wide: true,
+    blurb:
+      'Take money inside Salesforce. We integrate Stripe, Razorpay and other gateways so quotes, invoices and subscriptions sync to your org automatically.',
+    points: [
+      'Stripe & Razorpay integration',
+      'Recurring & subscription billing',
+      'Invoice & quote-to-payment sync',
+      'Webhooks & reconciliation',
+      'PCI-aware, secure checkout flows',
+      'Refunds & dunning automation',
+    ],
+  },
+];
+
+const whyStats = [
+  { value: 'Certified', label: 'Salesforce-certified consultants on every engagement' },
+  { value: 'Fixed-scope', label: 'Clear deliverables and timelines — no runaway projects' },
+  { value: 'End-to-end', label: 'Discovery, build, launch and adoption under one roof' },
+];
+
+const process = [
+  {
+    no: '01',
+    title: 'Discover',
+    text: 'We map your process, data and goals before touching a single field. You get a clear blueprint, not assumptions.',
+  },
+  {
+    no: '02',
+    title: 'Design',
+    text: 'A solution architecture tailored to how your team actually works — scalable, documented, and approved up front.',
+  },
+  {
+    no: '03',
+    title: 'Forge',
+    text: 'Configuration and development in tight, reviewable iterations. You see progress every sprint, never a black box.',
+  },
+  {
+    no: '04',
+    title: 'Launch & Adopt',
+    text: 'Migration, training and hypercare. We hand over a platform your team owns with confidence.',
+  },
+];
+---
+
+<Base>
+  <Nav />
+
+  <!-- ============================ HERO ============================ -->
+  <section class="hero">
+    <div class="hero__kanji" aria-hidden="true">未来</div>
+
+    <div class="hero__inner">
+      <span class="mono-label hero__eyebrow">Salesforce Consulting &amp; Implementation</span>
+
+      <h1 class="hero__title">
+        We forge Salesforce<br />
+        into <span class="hero__title-accent">your advantage</span>.
+      </h1>
+
+      <p class="hero__lede">
+        MiraiForge Technologies helps companies implement Salesforce the right
+        way — Sales Cloud, Service Cloud and Experience Cloud, built with the
+        craft of a workshop and the discipline of an engineering team.
+      </p>
+
+      <div class="hero__cta">
+        <a href="#contact" class="btn btn--primary">Start a project</a>
+        <a href="#services" class="btn btn--ghost">Explore services</a>
+      </div>
+
+      <div class="hero__tagline mono-label">
+        FORGING&nbsp;THE&nbsp;FUTURE&nbsp;&nbsp;·&nbsp;&nbsp;<span class="hero__jp">未来を鍛える</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================== SERVICES ========================== -->
+  <section id="services" class="section">
+    <div class="section-tag">
+      <span class="num">01</span>
+      <span class="name">What We Build</span>
+    </div>
+
+    <div class="services__intro">
+      <h2 class="section-heading">
+        One platform, <span class="ink-strong">four ways</span> we make it yours.
+      </h2>
+      <p class="section-sub">
+        We specialise in the Salesforce clouds that move the needle for growing
+        companies — and the integration work that ties them together.
+      </p>
+    </div>
+
+    <div class="services__grid">
+      {services.map((s) => (
+        <article class={`service${s.wide ? ' service--wide' : ''}`}>
+          <div class="service__head">
+            <span class="service__no mono-label" style={`color:${s.accent};`}>{s.no}</span>
+            <span class="service__bar" style={`background:${s.accent};`}></span>
+          </div>
+          <h3 class="service__name">{s.name}</h3>
+          <p class="service__blurb">{s.blurb}</p>
+          <ul class="service__points">
+            {s.points.map((p) => (
+              <li><span class="service__tick" style={`color:${s.accent};`}>—</span>{p}</li>
+            ))}
+          </ul>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <!-- ============================ WHY US ============================ -->
+  <section id="why" class="section why">
+    <div class="section-tag">
+      <span class="num">02</span>
+      <span class="name">Why MiraiForge</span>
+    </div>
+
+    <div class="why__grid">
+      <div class="why__lead">
+        <h2 class="section-heading">
+          A consultancy that <span class="ink-strong">ships</span>,
+          then <span class="ink-strong">stays</span>.
+        </h2>
+        <p class="section-sub">
+          Plenty of firms can sell you Salesforce. We're here to make it work —
+          on time, within scope, and adopted by the people who use it every day.
+          No bloated teams, no surprise invoices, no abandoned org six months later.
+        </p>
+        <a href="#process" class="btn btn--ghost why__btn">See how we work</a>
+      </div>
+
+      <div class="why__stats">
+        {whyStats.map((s) => (
+          <div class="why__stat">
+            <div class="why__value">{s.value}</div>
+            <div class="why__label">{s.label}</div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- =========================== PROCESS =========================== -->
+  <section id="process" class="section">
+    <div class="section-tag">
+      <span class="num">03</span>
+      <span class="name">How We Work</span>
+    </div>
+
+    <div class="services__intro">
+      <h2 class="section-heading">
+        From blueprint to <span class="ink-strong">forged platform</span>.
+      </h2>
+      <p class="section-sub">
+        A disciplined, transparent process. You always know what's being built,
+        why, and what comes next.
+      </p>
+    </div>
+
+    <div class="process__grid">
+      {process.map((p) => (
+        <article class="step">
+          <span class="step__no mono-label">{p.no}</span>
+          <h3 class="step__title">{p.title}</h3>
+          <p class="step__text">{p.text}</p>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <!-- =========================== CONTACT =========================== -->
+  <section id="contact" class="section contact">
+    <div class="contact__kanji" aria-hidden="true">鍛</div>
+    <div class="contact__inner">
+      <span class="mono-label contact__eyebrow">Start a Project</span>
+      <h2 class="contact__title">
+        Let's forge something<br />that lasts.
+      </h2>
+      <p class="contact__lede">
+        Tell us where Salesforce should take your business. We'll come back
+        with a clear, no-pressure plan to get you there.
+      </p>
+      <a href="mailto:hello@miraiforge.tech" class="btn btn--primary contact__btn">
+        hello@miraiforge.tech
+      </a>
+    </div>
+  </section>
+
+  <Footer />
+</Base>
+
+<style>
+  /* ---------------- HERO ---------------- */
+  .hero {
+    position: relative;
+    padding: 132px var(--pad-x) 120px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    overflow: hidden;
+    border-bottom: 1px solid var(--line);
+  }
+  .hero__kanji {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -54%);
+    font-family: var(--font-jp);
+    font-weight: 300;
+    font-size: 440px;
+    line-height: 1;
+    color: var(--ink);
+    opacity: 0.035;
+    letter-spacing: -0.05em;
+    user-select: none;
+    pointer-events: none;
+    white-space: nowrap;
+  }
+  .hero__inner {
+    position: relative;
+    max-width: 760px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .hero__eyebrow {
+    color: var(--accent);
+    margin-bottom: 30px;
+  }
+  .hero__title {
+    font-size: 66px;
+    font-weight: 200;
+    line-height: 1.04;
+    letter-spacing: -0.035em;
+  }
+  .hero__title-accent {
+    font-weight: 700;
+  }
+  .hero__lede {
+    margin-top: 30px;
+    max-width: 560px;
+    font-size: 18px;
+    font-weight: 300;
+    line-height: 1.7;
+    color: var(--muted);
+  }
+  .hero__cta {
+    margin-top: 44px;
+    display: flex;
+    gap: 14px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .hero__tagline {
+    margin-top: 54px;
+    color: var(--faint);
+    letter-spacing: 0.16em;
+  }
+  .hero__jp {
+    font-family: var(--font-jp);
+  }
+
+  /* ------------- Shared section headings ------------- */
+  .section-heading {
+    font-size: 38px;
+    font-weight: 300;
+    line-height: 1.22;
+    letter-spacing: -0.02em;
+    max-width: 620px;
+  }
+  .ink-strong {
+    font-weight: 600;
+  }
+  .section-sub {
+    margin-top: 22px;
+    max-width: 540px;
+    font-size: 16px;
+    font-weight: 300;
+    line-height: 1.7;
+    color: var(--muted);
+  }
+  .services__intro {
+    margin-bottom: 60px;
+  }
+
+  /* ---------------- SERVICES ---------------- */
+  .services__grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1px;
+    background: var(--line);
+    border: 1px solid var(--line);
+  }
+  .service {
+    background: var(--paper);
+    padding: 44px 40px;
+    transition: background 0.18s ease;
+  }
+  .service:hover {
+    background: color-mix(in oklab, var(--paper) 92%, var(--shell));
+  }
+  .service--wide {
+    grid-column: 1 / -1;
+  }
+  .service--wide .service__blurb {
+    max-width: 560px;
+  }
+  .service--wide .service__points {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .service__head {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 22px;
+  }
+  .service__bar {
+    height: 1px;
+    flex: 1;
+    opacity: 0.5;
+  }
+  .service__name {
+    font-size: 26px;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    margin-bottom: 16px;
+  }
+  .service__blurb {
+    font-size: 15px;
+    font-weight: 300;
+    line-height: 1.7;
+    color: var(--muted);
+    max-width: 420px;
+  }
+  .service__points {
+    list-style: none;
+    margin-top: 28px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px 20px;
+  }
+  .service__points li {
+    display: flex;
+    gap: 10px;
+    align-items: baseline;
+    font-size: 13px;
+    color: var(--ink);
+  }
+  .service__tick {
+    font-weight: 700;
+  }
+
+  /* ---------------- WHY ---------------- */
+  .why__grid {
+    display: grid;
+    grid-template-columns: 1.1fr 1fr;
+    gap: 64px;
+    align-items: start;
+  }
+  .why__btn {
+    margin-top: 36px;
+  }
+  .why__stats {
+    display: flex;
+    flex-direction: column;
+    border-top: 1px solid var(--line);
+  }
+  .why__stat {
+    padding: 28px 0;
+    border-bottom: 1px solid var(--line);
+  }
+  .why__value {
+    font-size: 24px;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    margin-bottom: 8px;
+  }
+  .why__label {
+    font-size: 14px;
+    font-weight: 300;
+    line-height: 1.6;
+    color: var(--muted);
+  }
+
+  /* ---------------- PROCESS ---------------- */
+  .process__grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1px;
+    background: var(--line);
+    border: 1px solid var(--line);
+  }
+  .step {
+    background: var(--paper);
+    padding: 40px 30px 48px;
+  }
+  .step__no {
+    color: var(--accent);
+    font-size: 12px;
+  }
+  .step__title {
+    margin-top: 22px;
+    font-size: 22px;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    margin-bottom: 14px;
+  }
+  .step__text {
+    font-size: 14px;
+    font-weight: 300;
+    line-height: 1.7;
+    color: var(--muted);
+  }
+
+  /* ---------------- CONTACT ---------------- */
+  .contact {
+    position: relative;
+    background: var(--ink);
+    color: var(--paper);
+    overflow: hidden;
+    text-align: center;
+    border-bottom: none;
+    padding-top: 110px;
+    padding-bottom: 110px;
+  }
+  .contact__kanji {
+    position: absolute;
+    top: 50%;
+    right: 4%;
+    transform: translateY(-50%);
+    font-family: var(--font-jp);
+    font-size: 360px;
+    line-height: 1;
+    color: var(--paper);
+    opacity: 0.04;
+    user-select: none;
+    pointer-events: none;
+  }
+  .contact__inner {
+    position: relative;
+    max-width: 620px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .contact__eyebrow {
+    color: var(--accent);
+    margin-bottom: 26px;
+  }
+  .contact__title {
+    font-size: 52px;
+    font-weight: 300;
+    line-height: 1.1;
+    letter-spacing: -0.03em;
+  }
+  .contact__lede {
+    margin-top: 26px;
+    max-width: 480px;
+    font-size: 17px;
+    font-weight: 300;
+    line-height: 1.7;
+    color: var(--faint);
+  }
+  .contact__btn {
+    margin-top: 40px;
+    text-transform: none;
+    letter-spacing: 0.04em;
+    font-size: 14px;
+  }
+  .contact__btn:hover {
+    color: var(--paper);
+  }
+
+  /* ---------------- RESPONSIVE ---------------- */
+  @media (max-width: 980px) {
+    .why__grid {
+      grid-template-columns: 1fr;
+      gap: 40px;
+    }
+    .process__grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  @media (max-width: 860px) {
+    .hero {
+      padding: 88px var(--pad-x) 80px;
+    }
+    .hero__title {
+      font-size: 42px;
+    }
+    .hero__kanji {
+      font-size: 280px;
+    }
+    .section-heading {
+      font-size: 30px;
+    }
+    .services__grid {
+      grid-template-columns: 1fr;
+    }
+    .service__points {
+      grid-template-columns: 1fr;
+    }
+    .contact__title {
+      font-size: 36px;
+    }
+  }
+  @media (max-width: 560px) {
+    .process__grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

@@ -1,0 +1,34 @@
+11:26:25 [types] Generated 0ms
+11:26:25 [content] Syncing content
+11:26:25 [content] Synced content
+11:26:25 [vite] Re-optimizing dependencies because vite config has changed
+
+ astro  v5.18.2 ready in 59 ms
+
+┃ Local    http://localhost:4321/
+┃ Network  use --host to expose
+
+11:26:25 watching for file changes...
+
+ update  ▶ New version of Astro available: 7.0.3
+  Run npx @astrojs/upgrade to update
+
+11:26:36 [200] / 7ms
+11:26:53 [200] / 2ms
+11:27:09 [200] / 12ms
+11:27:18 [200] / 5ms
+11:28:20 [watch] /src/components/Footer.astro?astro&type=style&index=0&lang.css
+11:28:20 [200] / 3ms
+11:28:20 [200] / 3ms
+11:31:03 [watch] /src/pages/index.astro?astro&type=style&index=0&lang.css
+11:31:03 [200] / 3ms
+11:31:03 [200] / 4ms
+11:31:10 [watch] /src/pages/index.astro?astro&type=style&index=0&lang.css
+11:31:10 [200] / 4ms
+11:31:10 [200] / 4ms
+11:31:17 [watch] /src/pages/index.astro?astro&type=style&index=0&lang.css
+11:31:17 [watch] src/pages/index.astro
+11:31:28 [watch] /src/components/Footer.astro?astro&type=style&index=0&lang.css
+11:31:28 [200] / 3ms
+11:31:28 [200] / 3ms
+11:32:18 [200] / 4ms

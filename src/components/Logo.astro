@@ -1,0 +1,85 @@
+---
+/**
+ * MiraiForge seal-swirl mark + wordmark.
+ * hanko (stamp) fused with mitsudomoe (three rotating blades).
+ */
+interface Props {
+  size?: number;          // mark size in px
+  showWordmark?: boolean; // render "MiraiForge / TECHNOLOGIES" beside the seal
+  reversed?: boolean;     // light seal + text on ink backgrounds
+  wordSize?: number;      // wordmark font-size in px
+}
+const {
+  size = 40,
+  showWordmark = true,
+  reversed = false,
+  wordSize = 22,
+} = Astro.props;
+
+const base = reversed ? 'var(--paper)' : 'var(--ink)';
+const cut = reversed ? 'var(--ink)' : 'var(--paper)';
+const ringColor = reversed ? 'var(--faint)' : 'var(--muted)';
+const wordColor = reversed ? 'var(--paper)' : 'var(--ink)';
+---
+
+<a class="logo" href="/" aria-label="MiraiForge Technologies — home">
+  <svg
+    class="logo__mark"
+    width={size}
+    height={size}
+    viewBox="0 0 120 120"
+    fill="none"
+    role="img"
+    aria-hidden="true"
+  >
+    <rect x="5" y="5" width="110" height="110" rx="24" fill={base}></rect>
+    <g transform="translate(60 60)">
+      <path d="M0 0 L0 -34 L17 -18 Z" fill={cut}></path>
+      <path d="M0 0 L0 -34 L17 -18 Z" fill={cut} transform="rotate(120)"></path>
+      <path d="M0 0 L0 -34 L17 -18 Z" fill="var(--accent)" transform="rotate(240)"></path>
+      <circle r="6" fill={base}></circle>
+    </g>
+  </svg>
+
+  {showWordmark && (
+    <span class="logo__word">
+      <span class="logo__name" style={`font-size:${wordSize}px;`}>
+        <span class="logo__mirai" style={`color:${wordColor};`}>Mirai</span><span
+          class="logo__forge"
+          style={`color:${wordColor};`}>Forge</span>
+      </span>
+      <span class="logo__tech" style={`color:${ringColor};`}>TECHNOLOGIES</span>
+    </span>
+  )}
+</a>
+
+<style>
+  .logo {
+    display: inline-flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .logo__word {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+  .logo__name {
+    display: flex;
+    align-items: baseline;
+    line-height: 0.9;
+    letter-spacing: -0.035em;
+  }
+  .logo__mirai {
+    font-weight: 200;
+  }
+  .logo__forge {
+    font-weight: 700;
+  }
+  .logo__tech {
+    font-weight: 500;
+    font-size: 8px;
+    letter-spacing: 0.46em;
+    padding-left: 0.46em;
+  }
+</style>

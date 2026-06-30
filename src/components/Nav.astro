@@ -1,0 +1,69 @@
+---
+import Logo from './Logo.astro';
+
+const links = [
+  { href: '#services', label: 'Services' },
+  { href: '#why', label: 'Why Us' },
+  { href: '#process', label: 'Process' },
+  { href: '#contact', label: 'Contact' },
+];
+---
+
+<header class="nav">
+  <Logo size={36} wordSize={20} />
+
+  <nav class="nav__links" aria-label="Primary">
+    {links.map((l) => (
+      <a href={l.href} class="nav__link">{l.label}</a>
+    ))}
+  </nav>
+
+  <a href="#contact" class="btn btn--primary nav__cta">Start a project</a>
+</header>
+
+<style>
+  .nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    padding: 22px var(--pad-x);
+    border-bottom: 1px solid var(--line);
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: color-mix(in oklab, var(--paper) 88%, transparent);
+    backdrop-filter: blur(10px);
+  }
+
+  .nav__links {
+    display: flex;
+    gap: 36px;
+    margin-left: auto;
+  }
+
+  .nav__link {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    transition: color 0.16s ease;
+  }
+  .nav__link:hover {
+    color: var(--ink);
+  }
+
+  .nav__cta {
+    padding: 12px 20px;
+  }
+
+  @media (max-width: 860px) {
+    .nav__links {
+      display: none;
+    }
+    .nav__cta {
+      display: none;
+    }
+  }
+</style>
