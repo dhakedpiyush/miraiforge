@@ -277,6 +277,9 @@ const process = [
     font-weight: 200;
     line-height: 1.04;
     letter-spacing: -0.035em;
+    /* lines flush-left to each other; the block stays centered via the
+       flex column's align-items:center, so "W" sits above "i" */
+    text-align: left;
   }
   .hero__title-accent {
     font-weight: 700;

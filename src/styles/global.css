@@ -19,6 +19,7 @@
   --cyan: oklch(0.62 0.135 215);     /* Quench Cyan  #19A7D4 */
   --violet: oklch(0.6 0.135 300);    /* Mirai Violet #8D6AE6 */
   --accent: var(--blue);             /* Steel Blue leads */
+  --accent-soft: oklch(0.62 0.135 256 / 0.1); /* tinted accent fills */
 
   /* Type */
   --font-sans: 'Sora', system-ui, -apple-system, sans-serif;
@@ -39,6 +40,12 @@
 html {
   scroll-behavior: smooth;
   -webkit-text-size-adjust: 100%;
+}
+
+/* Anchored sections tuck flush under the sticky nav (~80px tall) so the
+   section's own top padding handles spacing and no divider line peeks out */
+[id] {
+  scroll-margin-top: 80px;
 }
 
 body {
