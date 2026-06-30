@@ -214,24 +214,85 @@ const process = [
 
   <!-- =========================== CONTACT =========================== -->
   <section id="contact" class="section contact">
-    <div class="contact__kanji" aria-hidden="true">鍛</div>
-    <div class="contact__inner">
-      <span class="mono-label contact__eyebrow">Start a Project</span>
-      <h2 class="contact__title">
-        Let's forge something<br />that lasts.
-      </h2>
-      <p class="contact__lede">
-        Tell us where Salesforce should take your business. We'll come back
-        with a clear, no-pressure plan to get you there.
-      </p>
-      <a href="mailto:hello@miraiforge.tech" class="btn btn--primary contact__btn">
-        hello@miraiforge.tech
-      </a>
+    <div class="section-tag">
+      <span class="num">04</span>
+      <span class="name">Contact</span>
+    </div>
+
+    <div class="contact__grid">
+      <div class="contact__lead">
+        <h2 class="section-heading">
+          Let's forge something <span class="ink-strong">that lasts</span>.
+        </h2>
+        <p class="section-sub">
+          Tell us where Salesforce should take your business and we'll come back
+          with a clear, no-pressure plan to get you there.
+        </p>
+
+        <div class="contact__methods">
+          <div class="contact__method">
+            <span class="mono-label">Email</span>
+            <a href="mailto:hello@miraiforge.tech">hello@miraiforge.tech</a>
+          </div>
+          <div class="contact__method">
+            <span class="mono-label">Based in</span>
+            <span class="contact__method-val">Bangalore, India</span>
+          </div>
+          <div class="contact__method">
+            <span class="mono-label">Response time</span>
+            <span class="contact__method-val">Within 1–2 business days</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="contact__formcard">
+        <div class="contact__success" id="contact-success" hidden>
+          <div class="contact__success-icon">✓</div>
+          <h3 class="contact__success-title">Message sent</h3>
+          <p class="contact__success-body">
+            Thanks for reaching out — we'll get back to you within 1–2 business
+            days.
+          </p>
+        </div>
+
+        <form class="contact__form" id="contact-form" novalidate>
+          <label class="field">
+            <span class="field__label">Name *</span>
+            <input required name="name" type="text" placeholder="Aarav Sharma" />
+          </label>
+          <label class="field">
+            <span class="field__label">Work email *</span>
+            <input required name="email" type="email" placeholder="you@company.com" />
+          </label>
+          <label class="field">
+            <span class="field__label">Company</span>
+            <input name="company" type="text" placeholder="Company name" />
+          </label>
+          <label class="field">
+            <span class="field__label">How can we help? *</span>
+            <textarea required name="message" rows="4" placeholder="Tell us about your Salesforce goals, current setup, or the problem you're trying to solve…"></textarea>
+          </label>
+          <button type="submit" class="btn btn--primary contact__submit">Send message →</button>
+        </form>
+      </div>
     </div>
   </section>
 
   <Footer />
 </Base>
+
+<script>
+  const form = document.getElementById('contact-form') as HTMLFormElement | null;
+  const success = document.getElementById('contact-success');
+  if (form && success) {
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      if (!form.reportValidity()) return;
+      form.hidden = true;
+      success.hidden = false;
+    });
+  }
+</script>
 
 <style>
   /* ---------------- HERO ---------------- */
@@ -461,68 +522,125 @@ const process = [
   }
 
   /* ---------------- CONTACT ---------------- */
-  .contact {
-    position: relative;
-    background: var(--ink);
-    color: var(--paper);
-    overflow: hidden;
-    text-align: center;
-    border-bottom: none;
-    padding-top: 110px;
-    padding-bottom: 110px;
+  .contact__grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 64px;
+    align-items: start;
   }
-  .contact__kanji {
-    position: absolute;
-    top: 50%;
-    right: 4%;
-    transform: translateY(-50%);
-    font-family: var(--font-jp);
-    font-size: 360px;
-    line-height: 1;
-    color: var(--paper);
-    opacity: 0.04;
-    user-select: none;
-    pointer-events: none;
-  }
-  .contact__inner {
-    position: relative;
-    max-width: 620px;
-    margin: 0 auto;
+  .contact__methods {
+    margin-top: 44px;
     display: flex;
     flex-direction: column;
-    align-items: center;
+    gap: 26px;
   }
-  .contact__eyebrow {
-    color: var(--accent);
-    margin-bottom: 26px;
+  .contact__method {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding-bottom: 26px;
+    border-bottom: 1px solid var(--line);
   }
-  .contact__title {
-    font-size: 52px;
-    font-weight: 300;
-    line-height: 1.1;
-    letter-spacing: -0.03em;
+  .contact__method:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
   }
-  .contact__lede {
-    margin-top: 26px;
-    max-width: 480px;
+  .contact__method a,
+  .contact__method-val {
     font-size: 17px;
     font-weight: 300;
-    line-height: 1.7;
-    color: var(--faint);
+    color: var(--ink);
   }
-  .contact__btn {
-    margin-top: 40px;
+  .contact__method a {
+    transition: color 0.16s ease;
+  }
+  .contact__method a:hover {
+    color: var(--accent);
+  }
+
+  .contact__formcard {
+    border: 1px solid var(--line);
+    padding: 40px;
+    background: color-mix(in oklab, var(--paper) 60%, var(--shell));
+  }
+  .contact__form {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+  .contact__form .field {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+  }
+  .contact__form .field__label {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--muted);
+  }
+  .contact__form input,
+  .contact__form textarea {
+    font-family: inherit;
+    font-size: 14px;
+    padding: 12px 14px;
+    border: 1px solid var(--line);
+    background: var(--paper);
+    color: var(--ink);
+    outline: none;
+    transition: border-color 0.16s ease;
+    width: 100%;
+  }
+  .contact__form input:focus,
+  .contact__form textarea:focus {
+    border-color: var(--accent);
+  }
+  .contact__form textarea {
+    resize: vertical;
+  }
+  .contact__submit {
+    margin-top: 6px;
+    align-self: flex-start;
     text-transform: none;
     letter-spacing: 0.04em;
     font-size: 14px;
   }
-  .contact__btn:hover {
-    color: var(--paper);
+
+  .contact__success {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 16px;
+    padding: 40px 0;
+  }
+  .contact__success-icon {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: var(--accent-soft);
+    color: var(--accent);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+  }
+  .contact__success-title {
+    font-size: 24px;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+  }
+  .contact__success-body {
+    font-size: 15px;
+    font-weight: 300;
+    line-height: 1.7;
+    color: var(--muted);
+    max-width: 340px;
   }
 
   /* ---------------- RESPONSIVE ---------------- */
   @media (max-width: 980px) {
-    .why__grid {
+    .why__grid,
+    .contact__grid {
       grid-template-columns: 1fr;
       gap: 40px;
     }
@@ -546,9 +664,6 @@ const process = [
     .service__points,
     .service--wide .service__points {
       grid-template-columns: 1fr;
-    }
-    .contact__title {
-      font-size: 36px;
     }
   }
   @media (max-width: 560px) {
