@@ -1,0 +1,687 @@
+---
+import Base from '../layouts/Base.astro';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+
+const navLinks = [
+  { href: '/careers#life', label: 'Life Here' },
+  { href: '/careers#benefits', label: 'Benefits' },
+  { href: '/careers#openings', label: 'Openings' },
+  { href: '/careers#process', label: 'Process' },
+];
+---
+
+<Base
+  title="Apply — MiraiForge Technologies"
+  description="Apply to join MiraiForge Technologies. Tailored application for each open role across engineering, business and quality teams."
+>
+  <Nav links={navLinks} ctaHref="/careers#openings" ctaLabel="View roles" />
+
+  <!-- ============================ SUCCESS ============================ -->
+  <section class="apply-wrap success" id="success" hidden>
+    <div class="success__icon">✓</div>
+    <h1 class="success__title">Application received</h1>
+    <p class="success__body">
+      Thanks for applying to MiraiForge for the
+      <strong id="success-role">role</strong>. Our team reviews every
+      submission — expect to hear from us within 3 business days.
+    </p>
+    <a href="/careers#openings" class="btn btn--primary">Back to careers</a>
+  </section>
+
+  <!-- ============================ FORM ============================ -->
+  <section class="apply-wrap form-wrap" id="form-wrap">
+    <header class="apply-head">
+      <span class="mono-label apply-head__track">
+        Application · <span id="track-label">General Application</span>
+      </span>
+      <h1 class="apply-head__title">
+        Apply: <span class="ink-strong" id="role-title">General application</span>
+      </h1>
+      <p class="apply-head__note" id="track-note">
+        Tell us a little about your background so we can route your application
+        to the right team.
+      </p>
+    </header>
+
+    <form id="apply-form" class="form" novalidate>
+      <!-- 01 · ABOUT YOU -->
+      <fieldset class="fieldset">
+        <legend class="fieldset__legend">
+          <span class="fieldset__num">01</span>
+          <span class="fieldset__name">About You</span>
+          <span class="fieldset__rule"></span>
+        </legend>
+        <div class="grid2">
+          <label class="field">
+            <span class="field__label">Full name *</span>
+            <input required name="name" type="text" placeholder="Aarav Sharma" />
+          </label>
+          <label class="field">
+            <span class="field__label">Email *</span>
+            <input required name="email" type="email" placeholder="you@email.com" />
+          </label>
+          <label class="field">
+            <span class="field__label">Phone</span>
+            <input name="phone" type="tel" placeholder="+91 ·····" />
+          </label>
+          <label class="field">
+            <span class="field__label">Location</span>
+            <input name="location" type="text" placeholder="Bangalore, India" />
+          </label>
+          <label class="field field--full">
+            <span class="field__label">Applying for *</span>
+            <select required name="role" id="role-select"></select>
+          </label>
+        </div>
+      </fieldset>
+
+      <!-- 02 · EXPERIENCE (role-specific, injected) -->
+      <fieldset class="fieldset">
+        <legend class="fieldset__legend">
+          <span class="fieldset__num">02</span>
+          <span class="fieldset__name" id="exp-heading">Your Experience</span>
+          <span class="fieldset__rule"></span>
+        </legend>
+        <div class="grid2" id="exp-grid"></div>
+      </fieldset>
+
+      <!-- 03 · RÉSUMÉ & LINKS -->
+      <fieldset class="fieldset">
+        <legend class="fieldset__legend">
+          <span class="fieldset__num">03</span>
+          <span class="fieldset__name">Résumé &amp; Links</span>
+          <span class="fieldset__rule"></span>
+        </legend>
+        <label class="field">
+          <span class="field__label">
+            Portfolio / LinkedIn<span id="portfolio-hint"></span>
+          </span>
+          <input name="link" type="url" placeholder="https://linkedin.com/in/…" />
+        </label>
+        <div class="field">
+          <span class="field__label">
+            Résumé / CV * <span class="field__hint">— PDF, DOC, max 5MB</span>
+          </span>
+          <label class="dropzone" id="dropzone">
+            <input type="file" name="cv" id="cv-input" accept=".pdf,.doc,.docx" hidden />
+            <span class="dropzone__icon" id="cv-icon">↑</span>
+            <span class="dropzone__text">
+              <span class="dropzone__title" id="cv-title">Upload your CV</span>
+              <span class="dropzone__sub" id="cv-sub">Click to browse or drop a file here</span>
+            </span>
+          </label>
+        </div>
+        <label class="field">
+          <span class="field__label">Anything you'd like us to know?</span>
+          <textarea name="note" rows="4" placeholder="A short note about why you'd be a great fit…"></textarea>
+        </label>
+      </fieldset>
+
+      <div class="form__foot">
+        <span class="form__terms">
+          By applying you agree to MiraiForge processing your data for
+          recruitment purposes.
+        </span>
+        <button type="submit" class="btn btn--primary form__submit">
+          Submit application →
+        </button>
+      </div>
+    </form>
+  </section>
+
+  <Footer />
+</Base>
+
+<script>
+  // ---- Role → experience-track definitions (ported from the design) ----
+  const YEARS = ['Select…', 'None', 'Less than 1 year', '1–2 years', '2–4 years', '4–6 years', '6+ years'];
+  const yr = (name: string, label: string) => ({ name, label, kind: 'select', options: YEARS, placeholder: '' });
+  const txt = (name: string, label: string, placeholder = '') => ({ name, label, kind: 'text', options: [], placeholder });
+
+  type Field = { name: string; label: string; kind: 'select' | 'text'; options: string[]; placeholder: string };
+  type Track = { label: string; heading: string; note: string; fields: Field[] };
+
+  const TRACKS: Record<string, Track> = {
+    sfdev: {
+      label: 'Salesforce Engineering',
+      heading: 'Salesforce Experience',
+      note: 'Tell us about your hands-on Salesforce development experience. Best estimates are fine — be honest, we calibrate the interview to your level.',
+      fields: [
+        yr('exp_total', 'Total professional experience'),
+        yr('exp_sf', 'Total Salesforce experience'),
+        yr('exp_apex', 'Hands-on experience with Apex'),
+        yr('exp_lwc', 'Experience with LWC / Aura components'),
+        yr('exp_integration', 'Salesforce integration (REST/SOAP, middleware)'),
+        yr('exp_flows', 'Declarative automation (Flows / Process Builder)'),
+        txt('certs', 'Salesforce certifications held', 'e.g. Platform Developer I, Admin'),
+      ],
+    },
+    cpq: {
+      label: 'Salesforce CPQ',
+      heading: 'Salesforce CPQ Experience',
+      note: 'Tell us about your CPQ and core Salesforce development experience. Best estimates are fine.',
+      fields: [
+        yr('exp_total', 'Total professional experience'),
+        yr('exp_sf', 'Total Salesforce experience'),
+        yr('exp_cpq', 'Salesforce CPQ experience'),
+        yr('exp_billing', 'CPQ & Billing / Revenue Cloud experience'),
+        yr('exp_apex', 'Hands-on experience with Apex'),
+        yr('exp_integration', 'Salesforce integration experience'),
+        txt('certs', 'Salesforce certifications held', 'e.g. CPQ Specialist, PD I'),
+      ],
+    },
+    sfadmin: {
+      label: 'Salesforce Admin',
+      heading: 'Salesforce Admin Experience',
+      note: 'Tell us about your Salesforce administration experience across configuration, automation and data.',
+      fields: [
+        yr('exp_total', 'Total professional experience'),
+        yr('exp_admin', 'Total Salesforce admin experience'),
+        yr('exp_flows', 'Flow / Process automation'),
+        yr('exp_security', 'User, profile & security management'),
+        yr('exp_reports', 'Reports & dashboards'),
+        yr('exp_data', 'Data management (import/export, dedupe)'),
+        txt('certs', 'Salesforce certifications held', 'e.g. Administrator, Advanced Admin'),
+      ],
+    },
+    qa: {
+      label: 'Quality Assurance',
+      heading: 'QA & Testing Experience',
+      note: 'Tell us about your testing experience across manual, automation and Salesforce QA.',
+      fields: [
+        yr('exp_total', 'Total professional experience'),
+        yr('exp_qa', 'Total QA / testing experience'),
+        yr('exp_manual', 'Manual testing'),
+        yr('exp_automation', 'Test automation (Selenium, Provar, etc.)'),
+        yr('exp_sftest', 'Salesforce testing experience'),
+        yr('exp_api', 'API testing (Postman, REST)'),
+        txt('tools', 'Testing tools you have used', 'e.g. Jira, Selenium, Provar, Postman'),
+      ],
+    },
+    animator: {
+      label: 'Motion & Animation',
+      heading: 'Animation Experience',
+      note: 'Tell us about your animation experience and the tools you work in. Please share a showreel link below.',
+      fields: [
+        yr('exp_total', 'Total animation experience'),
+        yr('exp_2d', '2D animation / motion graphics'),
+        yr('exp_3d', '3D animation'),
+        yr('exp_explainer', 'Explainer / product video experience'),
+        txt('tools', 'Software you work in', 'e.g. After Effects, Blender, Maya'),
+        txt('styles', 'Styles / specialities', 'e.g. motion graphics, character, UI motion'),
+      ],
+    },
+    finance: {
+      label: 'Finance & Accounts',
+      heading: 'Finance Experience',
+      note: 'Tell us about your accounts payable and finance operations experience.',
+      fields: [
+        yr('exp_total', 'Total professional experience'),
+        yr('exp_ap', 'Accounts payable / invoicing experience'),
+        yr('exp_recon', 'Reconciliation & reporting'),
+        yr('exp_gst', 'GST / compliance / taxation'),
+        txt('tools', 'Accounting / ERP tools', 'e.g. Tally, SAP, QuickBooks, Zoho'),
+      ],
+    },
+    hr: {
+      label: 'Human Resources',
+      heading: 'HR Experience',
+      note: 'Tell us about your HR experience across recruitment and operations.',
+      fields: [
+        yr('exp_total', 'Total HR experience'),
+        yr('exp_recruit', 'Recruitment / talent acquisition'),
+        yr('exp_ops', 'HR operations & payroll'),
+        yr('exp_tech', 'Tech / IT hiring experience'),
+        txt('tools', 'HRMS / ATS tools used', 'e.g. Zoho People, Darwinbox, Lever'),
+      ],
+    },
+    bd: {
+      label: 'Business Development',
+      heading: 'Business Development Experience',
+      note: 'Tell us about your sales and business development experience.',
+      fields: [
+        yr('exp_total', 'Total professional experience'),
+        yr('exp_sales', 'B2B sales / lead generation'),
+        yr('exp_saas', 'IT services / SaaS selling experience'),
+        txt('crm', 'CRM tools used', 'e.g. Salesforce, HubSpot, Zoho'),
+        txt('domains', 'Industries you have sold into', 'e.g. BFSI, healthcare, manufacturing'),
+      ],
+    },
+    pm: {
+      label: 'Project Management',
+      heading: 'Project Management Experience',
+      note: 'Tell us about your project and delivery management experience.',
+      fields: [
+        yr('exp_total', 'Total professional experience'),
+        yr('exp_pm', 'Project / delivery management'),
+        yr('exp_agile', 'Agile / Scrum experience'),
+        yr('exp_sf', 'Salesforce project exposure'),
+        txt('tools', 'PM tools used', 'e.g. Jira, Asana, MS Project'),
+      ],
+    },
+    ops: {
+      label: 'Operations',
+      heading: 'Operations Experience',
+      note: 'Tell us about your operations and process management experience.',
+      fields: [
+        yr('exp_total', 'Total professional experience'),
+        yr('exp_ops', 'Operations / process management'),
+        yr('exp_coord', 'Cross-team coordination'),
+        txt('tools', 'Tools you have used', 'e.g. Excel, Notion, Salesforce'),
+      ],
+    },
+    general: {
+      label: 'General Application',
+      heading: 'Your Experience',
+      note: 'Tell us a little about your background so we can route your application to the right team.',
+      fields: [
+        yr('exp_total', 'Total professional experience'),
+        txt('primary', 'Primary skill area', 'e.g. Salesforce development, QA, design'),
+        txt('interest', 'Which team interests you most?', 'e.g. Engineering, Quality, Business'),
+      ],
+    },
+  };
+
+  const ROLE_OPTIONS = [
+    'General application',
+    'Operations Executive', 'Business Development Executive', 'Associate Project Manager L1', 'HR Specialist',
+    'Salesforce Developer', 'Salesforce Admin', 'Associate Salesforce Developer L1', 'Senior CPQ Developer',
+    'Trainee Developer', 'Animator', 'Accounts Payable Executive', 'Quality Analyst', 'Associate Quality Analyst L1',
+  ];
+
+  function trackFor(role: string): string {
+    const r = (role || '').toLowerCase();
+    if (r.includes('cpq')) return 'cpq';
+    if (r.includes('developer') || r.includes('trainee')) return 'sfdev';
+    if (r.includes('admin')) return 'sfadmin';
+    if (r.includes('quality')) return 'qa';
+    if (r.includes('animator')) return 'animator';
+    if (r.includes('accounts payable')) return 'finance';
+    if (r.includes('hr')) return 'hr';
+    if (r.includes('business development')) return 'bd';
+    if (r.includes('project manager')) return 'pm';
+    if (r.includes('operations')) return 'ops';
+    return 'general';
+  }
+
+  const $ = <T extends HTMLElement>(id: string) => document.getElementById(id) as T;
+
+  // Populate the role <select>
+  const roleSelect = $<HTMLSelectElement>('role-select');
+  ROLE_OPTIONS.forEach((opt) => {
+    const o = document.createElement('option');
+    o.value = opt;
+    o.textContent = opt;
+    roleSelect.appendChild(o);
+  });
+
+  function buildExperience(role: string) {
+    const def = TRACKS[trackFor(role)] || TRACKS.general;
+    $('track-label').textContent = def.label;
+    $('track-note').textContent = def.note;
+    $('exp-heading').textContent = def.heading;
+    $('role-title').textContent = role;
+    $('portfolio-hint').textContent = trackFor(role) === 'animator' ? ' / Showreel *' : '';
+
+    const grid = $('exp-grid');
+    grid.innerHTML = '';
+    def.fields.forEach((f) => {
+      const label = document.createElement('label');
+      label.className = 'field' + (f.kind === 'text' ? ' field--full' : '');
+
+      const span = document.createElement('span');
+      span.className = 'field__label';
+      span.textContent = f.label;
+      label.appendChild(span);
+
+      if (f.kind === 'select') {
+        const sel = document.createElement('select');
+        sel.name = f.name;
+        f.options.forEach((o) => {
+          const opt = document.createElement('option');
+          opt.value = o === 'Select…' ? '' : o;
+          opt.textContent = o;
+          sel.appendChild(opt);
+        });
+        label.appendChild(sel);
+      } else {
+        const inp = document.createElement('input');
+        inp.type = 'text';
+        inp.name = f.name;
+        inp.placeholder = f.placeholder;
+        label.appendChild(inp);
+      }
+      grid.appendChild(label);
+    });
+  }
+
+  // Initial role from ?role= query param
+  let initialRole = 'General application';
+  try {
+    const q = new URLSearchParams(window.location.search).get('role');
+    if (q) initialRole = q;
+  } catch (e) { /* noop */ }
+
+  // Make sure the role exists in the dropdown; if not, add it
+  if (!ROLE_OPTIONS.includes(initialRole)) {
+    const o = document.createElement('option');
+    o.value = initialRole;
+    o.textContent = initialRole;
+    roleSelect.insertBefore(o, roleSelect.children[1] || null);
+  }
+  roleSelect.value = initialRole;
+  buildExperience(initialRole);
+
+  roleSelect.addEventListener('change', () => buildExperience(roleSelect.value));
+
+  // File upload display
+  const cvInput = $<HTMLInputElement>('cv-input');
+  const dropzone = $('dropzone');
+  cvInput.addEventListener('change', () => {
+    const f = cvInput.files && cvInput.files[0];
+    if (f) {
+      dropzone.classList.add('is-filled');
+      $('cv-icon').textContent = '✓';
+      $('cv-title').textContent = f.name;
+      $('cv-sub').textContent = 'Click to replace';
+    } else {
+      dropzone.classList.remove('is-filled');
+      $('cv-icon').textContent = '↑';
+      $('cv-title').textContent = 'Upload your CV';
+      $('cv-sub').textContent = 'Click to browse or drop a file here';
+    }
+  });
+
+  // Submit → success state (front-end only; see note about wiring a backend)
+  const form = $<HTMLFormElement>('apply-form');
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    if (!form.reportValidity()) return;
+    $('success-role').textContent = roleSelect.value;
+    $('form-wrap').hidden = true;
+    $('success').hidden = false;
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+</script>
+
+<style>
+  .apply-wrap {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 56px var(--pad-x) 100px;
+  }
+
+  /* ---------------- HEADER ---------------- */
+  .apply-head {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-bottom: 40px;
+  }
+  .apply-head__track {
+    color: var(--accent);
+  }
+  .apply-head__title {
+    font-size: clamp(30px, 6vw, 44px);
+    font-weight: 200;
+    letter-spacing: -0.035em;
+    line-height: 1.1;
+  }
+  .ink-strong {
+    font-weight: 600;
+  }
+  .apply-head__note {
+    font-size: 15.5px;
+    line-height: 1.65;
+    color: var(--muted);
+    font-weight: 300;
+    max-width: 560px;
+  }
+
+  /* ---------------- FORM ---------------- */
+  .form {
+    display: flex;
+    flex-direction: column;
+    gap: 34px;
+  }
+  .fieldset {
+    border: none;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+  .fieldset__legend {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+  }
+  .fieldset__num {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--accent);
+  }
+  .fieldset__name {
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .fieldset__rule {
+    flex: 1;
+    height: 1px;
+    background: var(--line);
+  }
+
+  .grid2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+
+  .field {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+  }
+  .field--full {
+    grid-column: 1 / -1;
+  }
+  .field__label {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--muted);
+  }
+  .field__hint {
+    color: var(--faint);
+    font-weight: 400;
+  }
+
+  .field textarea {
+    resize: vertical;
+  }
+
+  /* ---------------- DROPZONE ---------------- */
+  .dropzone {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 20px;
+    border: 1.5px dashed var(--line);
+    background: var(--paper);
+    transition: border-color 0.18s ease, background 0.18s ease;
+  }
+  .dropzone:hover {
+    border-color: var(--accent);
+  }
+  .dropzone.is-filled {
+    border-color: var(--accent);
+    border-style: solid;
+    background: var(--accent-soft);
+  }
+  .dropzone__icon {
+    flex-shrink: 0;
+    width: 44px;
+    height: 44px;
+    background: var(--accent-soft);
+    color: var(--accent);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 19px;
+  }
+  .dropzone__text {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+  }
+  .dropzone__title {
+    font-size: 14.5px;
+    font-weight: 500;
+    color: var(--ink);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .dropzone__sub {
+    font-size: 12.5px;
+    color: var(--muted);
+  }
+
+  /* ---------------- FOOTER OF FORM ---------------- */
+  .form__foot {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding-top: 8px;
+    flex-wrap: wrap;
+  }
+  .form__terms {
+    font-size: 12px;
+    color: var(--faint);
+    line-height: 1.5;
+    max-width: 320px;
+  }
+  .form__submit {
+    text-transform: none;
+    letter-spacing: 0.04em;
+    font-size: 14px;
+  }
+
+  /* ---------------- SUCCESS ---------------- */
+  .success {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    padding-top: 120px;
+    padding-bottom: 120px;
+    max-width: 560px;
+  }
+  .success__icon {
+    width: 68px;
+    height: 68px;
+    border-radius: 50%;
+    background: var(--accent-soft);
+    color: var(--accent);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 32px;
+  }
+  .success__title {
+    font-size: 32px;
+    font-weight: 600;
+    letter-spacing: -0.025em;
+  }
+  .success__body {
+    font-size: 15.5px;
+    line-height: 1.7;
+    color: var(--muted);
+    font-weight: 300;
+    max-width: 420px;
+  }
+  .success__body strong {
+    color: var(--ink);
+    font-weight: 500;
+  }
+  .success .btn {
+    margin-top: 8px;
+  }
+
+  @media (max-width: 620px) {
+    .grid2 {
+      grid-template-columns: 1fr;
+    }
+    .form__foot {
+      flex-direction: column;
+      align-items: stretch;
+    }
+    .form__submit {
+      justify-content: center;
+    }
+  }
+</style>
+
+<!-- Global (un-scoped) so JS-injected experience fields are styled too.
+     Namespaced under .apply-wrap so nothing leaks to other pages. -->
+<style is:global>
+  .apply-wrap .field {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+  }
+  .apply-wrap .field--full {
+    grid-column: 1 / -1;
+  }
+  .apply-wrap .field__label {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--muted);
+  }
+  .apply-wrap .field__hint {
+    color: var(--faint);
+    font-weight: 400;
+  }
+
+  .apply-wrap input,
+  .apply-wrap select,
+  .apply-wrap textarea {
+    font-family: inherit;
+    font-size: 14px;
+    padding: 12px 14px;
+    border: 1px solid var(--line);
+    background: var(--paper);
+    color: var(--ink);
+    outline: none;
+    transition: border-color 0.16s ease;
+    width: 100%;
+    border-radius: 0;
+  }
+  .apply-wrap input:focus,
+  .apply-wrap select:focus,
+  .apply-wrap textarea:focus {
+    border-color: var(--accent);
+  }
+  .apply-wrap textarea {
+    resize: vertical;
+  }
+
+  /* Custom dropdown chevron — replaces the cramped native arrow */
+  .apply-wrap select {
+    cursor: pointer;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    padding-right: 40px;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8' fill='none'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' stroke='%2371757e' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 14px center;
+  }
+</style>

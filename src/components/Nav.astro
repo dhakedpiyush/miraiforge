@@ -33,6 +33,23 @@ const {
   </nav>
 
   <a href={ctaHref} class="btn btn--primary nav__cta">{ctaLabel}</a>
+
+  <button
+    class="nav__toggle"
+    type="button"
+    aria-label="Toggle menu"
+    aria-expanded="false"
+    aria-controls="nav-mobile"
+  >
+    <span></span><span></span><span></span>
+  </button>
+
+  <div class="nav__mobile" id="nav-mobile" data-open="false">
+    {links.map((l) => (
+      <a href={l.href} class="nav__mobile-link">{l.label}</a>
+    ))}
+    <a href={ctaHref} class="btn btn--primary nav__mobile-cta">{ctaLabel}</a>
+  </div>
 </header>
 
 <style>
@@ -72,12 +89,100 @@ const {
     padding: 12px 20px;
   }
 
+  /* Hamburger button — hidden on desktop */
+  .nav__toggle {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+    width: 42px;
+    height: 42px;
+    padding: 0;
+    background: transparent;
+    border: 1px solid var(--line);
+    cursor: pointer;
+  }
+  .nav__toggle span {
+    display: block;
+    width: 18px;
+    height: 1.5px;
+    margin: 0 auto;
+    background: var(--ink);
+    transition: transform 0.2s ease, opacity 0.2s ease;
+  }
+  .nav__toggle[aria-expanded='true'] span:nth-child(1) {
+    transform: translateY(6.5px) rotate(45deg);
+  }
+  .nav__toggle[aria-expanded='true'] span:nth-child(2) {
+    opacity: 0;
+  }
+  .nav__toggle[aria-expanded='true'] span:nth-child(3) {
+    transform: translateY(-6.5px) rotate(-45deg);
+  }
+
+  /* Mobile dropdown panel — anchored below the sticky header */
+  .nav__mobile {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    flex-direction: column;
+    padding: 12px var(--pad-x) 28px;
+    background: var(--paper);
+    border-bottom: 1px solid var(--line);
+    box-shadow: 0 24px 40px -24px rgba(20, 22, 30, 0.25);
+  }
+  .nav__mobile-link {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    padding: 16px 0;
+    border-bottom: 1px solid var(--line);
+    transition: color 0.16s ease;
+  }
+  .nav__mobile-link:hover {
+    color: var(--ink);
+  }
+  .nav__mobile-cta {
+    margin-top: 22px;
+    justify-content: center;
+  }
+
   @media (max-width: 860px) {
-    .nav__links {
-      display: none;
-    }
+    .nav__links,
     .nav__cta {
       display: none;
     }
+    .nav__toggle {
+      display: flex;
+    }
+    .nav__mobile[data-open='true'] {
+      display: flex;
+    }
   }
 </style>
+
+<script>
+  const toggle = document.querySelector<HTMLButtonElement>('.nav__toggle');
+  const panel = document.getElementById('nav-mobile');
+  if (toggle && panel) {
+    const setOpen = (open: boolean) => {
+      panel.dataset.open = String(open);
+      toggle.setAttribute('aria-expanded', String(open));
+    };
+    toggle.addEventListener('click', () => {
+      setOpen(panel.dataset.open !== 'true');
+    });
+    // Close after tapping any link
+    panel.querySelectorAll('a').forEach((a) =>
+      a.addEventListener('click', () => setOpen(false))
+    );
+    // Close when resizing up to desktop
+    window.addEventListener('resize', () => {
+      if (window.innerWidth > 860) setOpen(false);
+    });
+  }
+</script>

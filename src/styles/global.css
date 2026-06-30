@@ -37,6 +37,11 @@
   padding: 0;
 }
 
+/* hidden must win over author display rules (.success uses display:flex) */
+[hidden] {
+  display: none !important;
+}
+
 html {
   scroll-behavior: smooth;
   -webkit-text-size-adjust: 100%;

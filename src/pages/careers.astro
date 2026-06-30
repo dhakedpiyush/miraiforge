@@ -160,7 +160,7 @@ const seal = `<svg width="20" height="20" viewBox="0 0 120 120" fill="none"><rec
 
     <div class="featured__grid">
       {featured.map((r) => (
-        <article class="rolecard">
+        <a class="rolecard" href={`/apply?role=${encodeURIComponent(r.title)}`}>
           <div class="rolecard__top">
             <span class="chip chip--accent">{r.exp}</span>
             <span class="rolecard__seal" set:html={seal} />
@@ -169,7 +169,7 @@ const seal = `<svg width="20" height="20" viewBox="0 0 120 120" fill="none"><rec
             <h3 class="rolecard__title">{r.title}</h3>
             <span class="rolecard__loc">{r.loc}</span>
           </div>
-        </article>
+        </a>
       ))}
     </div>
   </section>
@@ -257,7 +257,7 @@ const seal = `<svg width="20" height="20" viewBox="0 0 120 120" fill="none"><rec
               <span>▸ {job.type}</span>
             </div>
           </div>
-          <a href="#apply" class="listing__apply">Apply →</a>
+          <a href={`/apply?role=${encodeURIComponent(job.title)}`} class="listing__apply">Apply →</a>
         </div>
       ))}
     </div>
@@ -382,7 +382,7 @@ const seal = `<svg width="20" height="20" viewBox="0 0 120 120" fill="none"><rec
     margin-bottom: 28px;
   }
   .hero__title {
-    font-size: 62px;
+    font-size: clamp(32px, 7.5vw, 62px);
     font-weight: 200;
     line-height: 1.08;
     letter-spacing: -0.04em;
@@ -887,9 +887,6 @@ const seal = `<svg width="20" height="20" viewBox="0 0 120 120" fill="none"><rec
   @media (max-width: 860px) {
     .hero {
       padding: 84px var(--pad-x) 72px;
-    }
-    .hero__title {
-      font-size: 40px;
     }
     .hero__kanji,
     .apply__kanji {

@@ -273,7 +273,7 @@ const process = [
     margin-bottom: 30px;
   }
   .hero__title {
-    font-size: 66px;
+    font-size: clamp(32px, 7.5vw, 66px);
     font-weight: 200;
     line-height: 1.04;
     letter-spacing: -0.035em;
@@ -534,9 +534,6 @@ const process = [
     .hero {
       padding: 88px var(--pad-x) 80px;
     }
-    .hero__title {
-      font-size: 42px;
-    }
     .hero__kanji {
       font-size: 280px;
     }
@@ -546,7 +543,8 @@ const process = [
     .services__grid {
       grid-template-columns: 1fr;
     }
-    .service__points {
+    .service__points,
+    .service--wide .service__points {
       grid-template-columns: 1fr;
     }
     .contact__title {
