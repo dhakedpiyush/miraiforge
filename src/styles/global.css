@@ -1,21 +1,21 @@
 /* ============================================================
-   MiraiForge Technologies — Brand System
+   MiraiForge Technologies - Brand System
    Option B · Seal Swirl
    ============================================================ */
 
 :root {
   /* Core */
-  --ink: oklch(0.205 0.013 262);     /* Forge Ink   #1E2026 — primary */
-  --paper: oklch(0.985 0.003 255);   /* Cold Paper  #FAFBFC — surface  */
+  --ink: oklch(0.205 0.013 262);     /* Forge Ink   #1E2026 - primary */
+  --paper: oklch(0.985 0.003 255);   /* Cold Paper  #FAFBFC - surface  */
   --shell: oklch(0.93 0.004 260);    /* page backdrop behind the sheet */
 
   /* Neutrals */
   --muted: oklch(0.56 0.009 262);    /* #71757e */
   --faint: oklch(0.74 0.006 262);    /* #b4b6bc */
-  --line: oklch(0.905 0.005 262);    /* #e8e9ec — hairlines */
+  --line: oklch(0.905 0.005 262);    /* #e8e9ec - hairlines */
 
-  /* Accents — single lightness + chroma, only hue shifts */
-  --blue: oklch(0.62 0.135 256);     /* Steel Blue   #4D7BF3 — accent · primary */
+  /* Accents - single lightness + chroma, only hue shifts */
+  --blue: oklch(0.62 0.135 256);     /* Steel Blue   #4D7BF3 - accent · primary */
   --cyan: oklch(0.62 0.135 215);     /* Quench Cyan  #19A7D4 */
   --violet: oklch(0.6 0.135 300);    /* Mirai Violet #8D6AE6 */
   --accent: var(--blue);             /* Steel Blue leads */
